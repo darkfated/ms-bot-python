@@ -5,9 +5,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from utils.errors import on_command_error as handle_command_error
 
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-PREFIX = os.getenv('PREFIX', '!')
+PREFIX = os.getenv('PREFIX', '%')
 MAX_QUEUE_SIZE = int(os.getenv('MAX_QUEUE_SIZE', '50'))
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout, format="%(asctime)s %(levelname)s %(message)s")
@@ -64,7 +65,7 @@ async def on_command_error(ctx, error):
     except Exception:
         logger.exception("Error in handle_command_error")
         try:
-            await ctx.reply(card_prefix("Произошла ошибка при обработке команды — проверьте логи."))
+            await ctx.reply(card_prefix("Проверьте логи, произошла ошибка при обработке команды."))
         except Exception:
             pass
 

@@ -4,7 +4,7 @@ from music.yt_utils import YTDLSource
 from utils.checks import user_in_voice
 
 def setup(bot, get_player, card_prefix, MAX_QUEUE_SIZE):
-    @bot.command(name='ситуация', help='!ситуация <создать|добавить|включить|выключить|список|песни|удалить> ...')
+    @bot.command(name='ситуация', help='Управление музыкальными подборками (плейлистами)')
     async def situation_cmd(ctx, action: str = None, name: str = None, *, query: str = None):
         if action is None:
             await ctx.reply(card_prefix("Использование: !ситуация <создать|добавить|включить|выключить|список|песни|удалить> ..."))

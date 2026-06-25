@@ -1,22 +1,16 @@
-import discord
+from utils.draw import MusicUI
+
 
 def setup(bot, get_player, card_prefix, _):
-    @bot.command(name='сейчас', help='!сейчас — показать текущий трек')
+
+    @bot.command(name="сейчас", help="Показать текущий трек")
     async def now_cmd(ctx):
         player = get_player(ctx.guild.id)
-        if player.current:
-            embed = discord.Embed(title="🃏 Сейчас играет", description=f"**{player.current.title}**")
-            await ctx.reply(embed=embed)
-        else:
-            await ctx.reply(card_prefix("Сейчас ничего не играет."))
+        await ctx.reply(embed=MusicUI.now(player.current))
 
-    @bot.tree.command(name='сейчас', description='Показать текущий трек')
+    @bot.tree.command(name="сейчас", description="Текущий трек")
     async def slash_now(interaction):
         player = get_player(interaction.guild.id)
-        if player.current:
-            embed = discord.Embed(title="🃏 Сейчас играет", description=f"**{player.current.title}**")
-            await interaction.response.send_message(embed=embed)
-        else:
-            await interaction.response.send_message(card_prefix("Сейчас ничего не играет."))
+        await interaction.response.send_message(embed=MusicUI.now(player.current))
 
     return now_cmd
