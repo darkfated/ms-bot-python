@@ -27,6 +27,7 @@ class MusicPlayer:
         self._connected_event = asyncio.Event()
         self._next_event = asyncio.Event()
         self._lock = asyncio.Lock()
+        self._disconnect_task = None
 
         self._audio = None
         self._skip_flag = False
@@ -207,3 +208,68 @@ class MusicPlayer:
             return False
         self.situations[name].append(source)
         return True
+
+    def cancel_disconnect_timer(self):
+        if self._disconnect_task and not self._disconnect_task.done():
+            self._disconnect_task.cancel()
+
+        self._disconnect_task = None
+
+
+    def start_disconnect_timer(self, delay: int = 10):
+        self.cancel_disconnect_timer()
+
+        self._disconnect_task = self.bot.loop.create_task(
+            self._disconnect_after(delay)
+        )
+
+    async def _disconnect_after(self, delay: int):
+        try:
+            await asyncio.sleep(delay)
+
+            vc = self._get_vc()
+
+            if not vc or not vc.is_connected():
+                return
+
+            humans = [
+                m for m in vc.channel.members
+                if not m.bot
+            ]
+
+            if humans:
+                return
+
+            logger.info(
+                "Leaving voice channel %s after %s seconds",
+                vc.channel.name,
+                delay
+            )
+
+            self.stop_all()
+
+            await vc.disconnect()
+
+            self._connected_event.clear()
+
+        except asyncio.CancelledError:
+            pass
+
+        except Exception:
+            logger.exception("Auto disconnect failed")
+
+    def check_empty_channel(self):
+        vc = self._get_vc()
+
+        if not vc or not vc.is_connected():
+            return
+
+        humans = [
+            m for m in vc.channel.members
+            if not m.bot
+        ]
+
+        if humans:
+            self.cancel_disconnect_timer()
+        else:
+            self.start_disconnect_timer(10)

@@ -94,6 +94,19 @@ async def on_command_error(ctx, error):
         pass
 
 
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if member == bot.user:
+        return
+
+    guild_id = member.guild.id
+
+    pl = players.get(guild_id)
+
+    if pl:
+        pl.check_empty_channel()
+
+
 commands_path = Path(__file__).parent / "commands"
 
 for file in commands_path.iterdir():
