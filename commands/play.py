@@ -7,7 +7,7 @@ from utils.checks import user_in_voice
 
 
 def setup(bot, get_player, card_prefix, MAX_QUEUE_SIZE):
-    @bot.command(name='играть', help='!play <запрос или ссылка> — добавить трек в очередь')
+    @bot.command(name='играть', help='!играть <название или ссылка> — добавить трек в очередь')
     async def play_cmd(ctx: commands.Context, *, query: str):
         if not user_in_voice(ctx):
             await ctx.reply(card_prefix("Вы должны находиться в голосовом канале, чтобы использовать эту команду."))

@@ -13,6 +13,8 @@ MAX_QUEUE_SIZE = int(os.getenv('MAX_QUEUE_SIZE', '50'))
 logging.basicConfig(level=logging.INFO, stream=sys.stdout, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger("music-bot")
 
+bot_permissions = discord.Permissions(274914691136)
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.voice_states = True
@@ -33,7 +35,11 @@ def card_prefix(text: str) -> str:
 
 @bot.event
 async def on_ready():
+    link = discord.utils.oauth_url(bot.user.id, permissions=bot_permissions)
+
     logger.info("Bot ready: %s (id=%s)", bot.user, bot.user.id)
+    print(f"\033[32mСсылка для приглашения бота:\033[0m {link}")
+
     try:
         await bot.tree.sync()
         logger.info("Slash commands synced")

@@ -1,5 +1,5 @@
 def setup(bot, get_player, card_prefix, _):
-    @bot.command(name='помощь', help='!помощь — список команд')
+    @bot.command(name='инфо', help='!инфо — список команд')
     async def help_cmd(ctx):
         lines = []
         for cmd in sorted(bot.commands, key=lambda c: c.name):
@@ -14,7 +14,7 @@ def setup(bot, get_player, card_prefix, _):
         for i in range(0, len(lines), 12):
             await ctx.reply(card_prefix("Список команд:\n" + "\n".join(lines[i:i+12])))
 
-    @bot.tree.command(name='помощь', description='Показать список команд')
+    @bot.tree.command(name='инфо', description='Показать список команд')
     async def slash_help(interaction):
         lines = []
         for cmd in sorted(bot.commands, key=lambda c: c.name):
