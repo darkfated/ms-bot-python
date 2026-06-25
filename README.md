@@ -6,7 +6,7 @@
 
 Умеет обрабатывать текстовые команды (например, `%инфо`) и Splash (через `/` в начале чата):
 
-<img width="710" height="292" alt="image" src="https://github.com/user-attachments/assets/048dcc46-ed06-42c6-982d-808f21d646a7" />
+<img width="531" height="603" alt="Скриншот информативной команды" src="https://github.com/user-attachments/assets/219bf80f-a661-4550-a60a-b4bee758466f" />
 
 ## Запуск проекта
 
